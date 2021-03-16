@@ -1,0 +1,54 @@
+TEST-00:
+    desc: malloc with cat + argument
+    ref: cat Makefile | cat -e
+    cmd: LD_PRELOAD=./libmalloc.so cat Makefile | cat -e
+
+TEST-01:
+    desc: malloc with cat + argument
+    ref: cat ./src/my_program.c | grep int | cat -e
+    cmd: LD_PRELOAD=./libmalloc.so cat ./src/my_program.c | grep int | cat -e
+
+TEST-02:
+    desc: malloc with factor + argument
+    ref: factor 20
+    cmd: LD_PRELOAD=./libmalloc.so factor 20
+
+TEST-03:
+    desc: malloc with factor + 2 arguments
+    ref: factor 20 50 30
+    cmd: LD_PRELOAD=./libmalloc.so factor 20 50 30
+
+TEST-04:
+    desc: malloc with factor + 8 arguments
+    ref: factor 20 30 40 50 60 70 80 90
+    cmd: LD_PRELOAD=./libmalloc.so factor 20 30 40 50 60 70 80 90
+
+TEST-05:
+    desc: malloc with ip a
+    ref: ip a
+    cmd: LD_PRELOAD=./libmalloc.so ip a
+
+TEST-05:
+    desc: multiple cat
+    ref: cat Makefile && cat Makefile
+    cmd: LD_PRELOAD=./libmalloc.so cat Makefile && cat Makefile
+
+TEST-06:
+    desc: multiple cat
+    ref: cat Makefile > text.txt && rm text.txt
+    cmd: LD_PRELOAD=./libmalloc.so cat Makefile > text.txt && rm text.txt
+
+TEST-07:
+    desc: test of free
+    ref: gcc tests/test_free.c -o program && ./program && rm program
+    cmd: gcc tests/test_free.c -L. -lmalloc -o program && LD_LIBRARY_PATH=. ./program && rm program
+
+TEST-08:
+    desc: test of calloc
+    ref: gcc tests/test_calloc.c -o program && ./program && rm program
+    cmd: gcc tests/test_calloc.c -L. -lmalloc -o program && LD_LIBRARY_PATH=. ./program && rm program
+
+TEST-09:
+    desc: test of ls
+    ref: ls
+    cmd: LD_PRELOAD=./libmalloc.so ls
